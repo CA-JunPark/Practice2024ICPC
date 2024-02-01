@@ -4,38 +4,37 @@ N, M = map(int, input().split())
 edges = [list(map(int, input().split())) for _ in range(M)]
 x = N
 
-graph = {}
-for e in edges:
-    if e[0] in graph:
-        graph[e[0]].append(e[1])
-    else:
-        graph[e[0]] = [e[1]]
+graph = {i: [] for i in range(1, N + 1)}
+for edge in edges:
+    u, v = edge
+    graph[u].append(v)
 
-while x > 0:
-    y = 0
-    if (x in graph):
-        candidates = []
-        candidates.extend(graph[x])
-        
-        i = 0
-        while i < len(candidates):
-            if candidates[i] in graph:
-                for yy in graph[candidates[i]]:
-                    if yy not in candidates:
-                        candidates.append(yy)
-            i += 1
-        
-        y = max(candidates)
-        
-        if (x < y):
-            print(x, y)
-            break
-        
-    x -= 1
-        
-if (x == 0):
-    print(-1)
-        
-        
-
+def search(x):
+    connected = set()
+    m = x
+    connected.add(x)
     
+    for c in graph[x]:
+        if c not in connected:
+            m = max(m, search(c))
+    return m
+
+target = (0, 0)
+for x in range(N-1, 0, -1):
+    y = search(x)
+    if y > x:
+        target = (x, y)
+        break
+
+if (target == (0, 0)):
+    print(-1)
+else:
+    print(*target)
+        
+# NOT DONE...
+# 5 5
+# 1 4
+# 2 5
+# 3 1
+# 2 4
+# 1 2
