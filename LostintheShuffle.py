@@ -1,4 +1,4 @@
-target = "3"
+target = "3" # complete!
 n = int(input())
 for i in range(n):
     swap = input()
