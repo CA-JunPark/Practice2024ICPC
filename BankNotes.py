@@ -17,7 +17,7 @@ fixed = 0
 answer = [sum(cn)]
 
 def calc(current,need, k):
-    for i in range(current + 1, n):
+    for i in range(current + 1, n): 
         k += bc[i][0] * need[i] 
         need[i] = min(bc[i][1], k//bc[i][0])
         k -= bc[i][0] * need[i] 
@@ -25,11 +25,10 @@ def calc(current,need, k):
     return k, need 
 
 while fixed < n:
+    need = [0 for _ in range(n)]
     need[fixed] = min(bc[fixed][1], k//bc[fixed][0])
-    for t in range(n):
-        if t != fixed:
-            need[t] = 0
-    k -= bc[fixed][0] * need[fixed]
+    
+    k = total -  bc[fixed][0] * need[fixed]
     k, need = calc(fixed, need, k)
     sub = fixed + 1
     while need[fixed] > 0:
