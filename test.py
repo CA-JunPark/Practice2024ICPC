@@ -2,7 +2,7 @@ from itertools import combinations
 from collections import defaultdict
 
 # Given list
-nums = [21, 13, 13, 11, 11, 11, 18, 18, 18, 18]
+nums = [21, 13, 13, 11, 11, 11, 18, 18, 18, 18, 16,16,16, 19,19]
 
 # Function to find all unique subsets and their sums
 
