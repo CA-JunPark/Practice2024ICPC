@@ -1,4 +1,4 @@
-# https://dmoj.ca/problem/banknotes 13/19 right only
+# https://dmoj.ca/problem/banknotes 15/19 scored
 
 n = int(input())
 bn = list(map(int, input().split()))
@@ -14,57 +14,19 @@ empty = [0 for i in range(n)]
 
 need = empty.copy()
 
-fixed = 0
+answer = float('inf')
 
-answer = sum(cn)
-
-
-def calc(current,need, k, stop=n-1):
+def calc(current,need, k):
     for i in range(current + 1, n): 
         k += bc[i][0] * need[i] 
         need[i] = min(bc[i][1], k//bc[i][0])
         k -= bc[i][0] * need[i]
-        if i == stop:
-            break
-
     return k, need 
-
-# while fixed < n:
-#     need = [0 for _ in range(n)]
-#     need[fixed] = min(bc[fixed][1], k//bc[fixed][0])
-    
-#     k = total - bc[fixed][0] * need[fixed]
-#     k, need = calc(fixed, need, k)
-#     sub = fixed + 1
-#     while need[fixed] > 0:
-#         if k > 0:
-#             k, need = calc(fixed, need, k, sub)
-#             while sub < n-1:
-#                 k, need = calc(sub, need, k)
-#                 if k == 0:
-#                     break
-#                 if need[sub] > 0:
-#                     need[sub] -= 1
-#                     k += bc[sub][0]
-#                 else:
-#                     sub += 1
-#         if k == 0:
-#             if sum(need) < answer:
-#                 answer = sum(need)
-        
-#         need[fixed] -= 1
-#         k += bc[fixed][0]
-#         sub = fixed + 1
-            
-#     k = total
-#     fixed += 1
 
 for q in range(n):
     need = empty.copy()
     need[q] = min(bc[q][1], k//bc[q][0])
-    # k = total - bc[q][0] * need[q]
-    # k, need = calc(q, need, k)
-
+    
     for w in range(need[q],-1,-1):
         need[q] = w
         k = total - bc[q][0] * need[q]
@@ -81,8 +43,9 @@ for q in range(n):
                 else:
                     sub += 1
         if k == 0:
-            if sum(need) < answer:
-                answer = sum(need)
+            s = sum(need)
+            if s < answer:
+                answer = s
         need = empty.copy()
 
 print(answer)
