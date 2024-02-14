@@ -10,11 +10,14 @@ total = k
 bc = [(bn[i],cn[i]) for i in range(n)]
 bc = sorted(bc, key=lambda x:x[0], reverse=True)
 
-need = [0 for i in range(n)]
+empty = [0 for i in range(n)]
+
+need = empty.copy()
 
 fixed = 0
 
 answer = sum(cn)
+
 
 def calc(current,need, k, stop=n-1):
     for i in range(current + 1, n): 
@@ -26,16 +29,48 @@ def calc(current,need, k, stop=n-1):
 
     return k, need 
 
-while fixed < n:
-    need = [0 for _ in range(n)]
-    need[fixed] = min(bc[fixed][1], k//bc[fixed][0])
+# while fixed < n:
+#     need = [0 for _ in range(n)]
+#     need[fixed] = min(bc[fixed][1], k//bc[fixed][0])
     
-    k = total - bc[fixed][0] * need[fixed]
-    k, need = calc(fixed, need, k)
-    sub = fixed + 1
-    while need[fixed] > 0:
+#     k = total - bc[fixed][0] * need[fixed]
+#     k, need = calc(fixed, need, k)
+#     sub = fixed + 1
+#     while need[fixed] > 0:
+#         if k > 0:
+#             k, need = calc(fixed, need, k, sub)
+#             while sub < n-1:
+#                 k, need = calc(sub, need, k)
+#                 if k == 0:
+#                     break
+#                 if need[sub] > 0:
+#                     need[sub] -= 1
+#                     k += bc[sub][0]
+#                 else:
+#                     sub += 1
+#         if k == 0:
+#             if sum(need) < answer:
+#                 answer = sum(need)
+        
+#         need[fixed] -= 1
+#         k += bc[fixed][0]
+#         sub = fixed + 1
+            
+#     k = total
+#     fixed += 1
+
+for q in range(n):
+    need = empty.copy()
+    need[q] = min(bc[q][1], k//bc[q][0])
+    # k = total - bc[q][0] * need[q]
+    # k, need = calc(q, need, k)
+
+    for w in range(need[q],-1,-1):
+        need[q] = w
+        k = total - bc[q][0] * need[q]
+        sub = q + 1
+        k, need = calc(q, need, k)
         if k > 0:
-            k, need = calc(fixed, need, k, sub)
             while sub < n-1:
                 k, need = calc(sub, need, k)
                 if k == 0:
@@ -48,14 +83,7 @@ while fixed < n:
         if k == 0:
             if sum(need) < answer:
                 answer = sum(need)
-        
-        need[fixed] -= 1
-        k += bc[fixed][0]
-        sub = fixed + 1
-            
-    k = total
-    fixed += 1
-    
+        need = empty.copy()
 
 print(answer)
 
