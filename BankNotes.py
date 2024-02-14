@@ -14,13 +14,15 @@ need = [0 for i in range(n)]
 
 fixed = 0
 
-answer = [sum(cn)]
+answer = sum(cn)
 
-def calc(current,need, k):
+def calc(current,need, k, stop=n-1):
     for i in range(current + 1, n): 
         k += bc[i][0] * need[i] 
         need[i] = min(bc[i][1], k//bc[i][0])
-        k -= bc[i][0] * need[i] 
+        k -= bc[i][0] * need[i]
+        if i == stop:
+            break
 
     return k, need 
 
@@ -28,30 +30,34 @@ while fixed < n:
     need = [0 for _ in range(n)]
     need[fixed] = min(bc[fixed][1], k//bc[fixed][0])
     
-    k = total -  bc[fixed][0] * need[fixed]
+    k = total - bc[fixed][0] * need[fixed]
     k, need = calc(fixed, need, k)
     sub = fixed + 1
     while need[fixed] > 0:
-        if k >= 0:
-            while sub < n:
+        if k > 0:
+            k, need = calc(fixed, need, k, sub)
+            while sub < n-1:
                 k, need = calc(sub, need, k)
                 if k == 0:
-                    if sum(need) < sum(answer):
-                        answer = need.copy()
                     break
-                
                 if need[sub] > 0:
                     need[sub] -= 1
                     k += bc[sub][0]
                 else:
                     sub += 1
+        if k == 0:
+            if sum(need) < answer:
+                answer = sum(need)
+        
         need[fixed] -= 1
         k += bc[fixed][0]
-    k = total         
+        sub = fixed + 1
+            
+    k = total
     fixed += 1
     
 
-print(sum(answer))
+print(answer)
 
 # 3
 # 2 3 5
@@ -66,7 +72,7 @@ print(sum(answer))
 # 3 1 2
 # 13
 
-# 2
+# 3
 
 # 4
 # 21 13 11 18
