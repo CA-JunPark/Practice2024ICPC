@@ -24,13 +24,23 @@ def subset_sums(subsets):
     return sums
 
 
-# Find all unique subsets
-unique_subsets = find_unique_subsets(nums)
+def binarySearch(arr, l, r, x):
+    while l <= r:
+        mid = l + (r - l) // 2
+        # Check if x is present at mid
+        if arr[mid] == x:
+            return mid
+        # If x is greater, ignore left half
+        elif arr[mid] < x:
+            l = mid + 1
+        # If x is smaller, ignore right half
+        else:
+            r = mid - 1
+    # If we reach here, then the element
+    # was not present
+    return -1
 
-# Calculate sums of all unique subsets
-sums = subset_sums(unique_subsets)
 
-# Print all repeated sums
-repeated_sums = {k: v for k, v in sums.items() if len(v) > 1}
-for sum_, subsets in repeated_sums.items():
-    print(f"Sum: {sum_}, Subsets: {subsets}")
+a = [1,2,3,4,5,6,7,8,110, 2312, 213123]
+
+print(binarySearch(a,0,len(a)-1,4))
